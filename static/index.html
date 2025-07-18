@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistant Dux Web (FastAPI)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', monospace;
+            background: radial-gradient(ellipse at center, #0d1b2a 0%, #001122 50%, #000000 100%);
+            color: #00ffff;
+            height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            animation: cosmicBreathing 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes cosmicBreathing {
+            0% { filter: hue-rotate(0deg) brightness(1); }
+            100% { filter: hue-rotate(20deg) brightness(1.1); }
+        }
+
+        /* Étoiles scintillantes animées */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: transparent;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Nébuleuses flottantes */
+        .nebula {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 15s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .nebula1 {
+            top: 10%;
+            left: 20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0,255,255,0.3) 0%, rgba(0,100,255,0.1) 50%, transparent 100%);
+            animation-delay: 0s;
+        }
+
+        .nebula2 {
+            top: 60%;
+            right: 15%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255,0,255,0.2) 0%, rgba(100,0,255,0.1) 50%, transparent 100%);
+            animation-delay: -7s;
+        }
+
+        .nebula3 {
+            bottom: 20%;
+            left: 10%;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0,255,100,0.25) 0%, rgba(0,150,255,0.1) 50%, transparent 100%);
+            animation-delay: -3s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(15px) rotate(240deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgba(0, 20, 40, 0.9);
+            border-radius: 20px;
+            box-shadow: 
+                0 0 50px rgba(0, 255, 255, 0.3),
+                inset 0 0 50px rgba(0, 100, 255, 0.1);
+            position: relative;
+            z-index: 10;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            animation: containerGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes containerGlow {
+            0% { box-shadow: 0 0 50px rgba(0, 255, 255, 0.3), inset 0 0 50px rgba(0, 100, 255, 0.1); }
+            100% { box-shadow: 0 0 80px rgba(0, 255, 255, 0.5), inset 0 0 80px rgba(0, 100, 255, 0.2); }
+        }
+
+        h1 {
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 3rem;
+            font-weight: 900;
+            text-shadow: 
+                0 0 20px #00ffff,
+                0 0 40px #00ffff,
+                0 0 60px #00ffff;
+            animation: titlePulse 3s ease-in-out infinite;
+            letter-spacing: 3px;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+            animation: slideInLeft 1s ease-out;
+            padding: 20px;
+            border-radius: 15px;
+            background: rgba(0, 40, 80, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .input-group:hover {
+            background: rgba(0, 60, 120, 0.8);
+            border-color: rgba(0, 255, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
+        }
+
+        @keyframes slideInLeft {
+            0% { transform: translateX(-100px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        .input-group label {
+            font-weight: 700;
+            color: #00ffff;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: block;
+            text-shadow: 0 0 10px #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            background: rgba(0, 20, 40, 0.8);
+            color: #00ffff;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', monospace;
+            transition: all 0.3s ease;
+            box-shadow: 
+                inset 0 0 10px rgba(0, 255, 255, 0.2),
+                0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: #00ffff;
+            background: rgba(0, 40, 80, 0.9);
+            box-shadow: 
+                inset 0 0 20px rgba(0, 255, 255, 0.3),
+                0 0 30px rgba(0, 255, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            color: #001122;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.5),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: buttonShine 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonShine {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 10px 40px rgba(0, 255, 255, 0.7),
+                inset 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .code-section {
+            margin-top: 40px;
+            animation: slideInRight 1s ease-out;
+            padding: 25px;
+            border-radius: 15px;
+            background: rgba(0, 40, 80, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            position: relative;
+            background-color: rgba(50, 50, 50, 0.7); /* Section distincte */
+        }
+
+        @keyframes slideInRight {
+            0% { transform: translateX(100px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        .code-box {
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            max-height: 500px;
+            position: relative;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 0, 0.2),
+                inset 0 0 30px rgba(0, 255, 0, 0.1);
+        }
+
+        .code-box h2 {
+            color: #00ffff;
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-family: 'Orbitron', monospace;
+            text-shadow: 0 0 20px #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(45deg, #ff6b35, #ff8e53);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 700;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+        }
+
+        .copy-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.7);
+        }
+
+        #loading-indicator {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2em;
+            color: #00ffff;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Assistant Robot IA */
+        .robot-assistant {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 120px;
+            height: 120px;
+            z-index: 100;
+            animation: robotFloat 3s ease-in-out infinite;
+            cursor: pointer;
+            filter: drop-shadow(0 0 30px #00ffff);
+        }
+
+        .robot-body {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #1e3c72, #2a5298);
+            border-radius: 15px;
+            position: relative;
+            margin: 0 auto;
+            border: 3px solid #00ffff;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 255, 0.5),
+                inset 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .robot-head {
+            width: 60px;
+            height: 40px;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            border-radius: 10px 10px 20px 20px;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 2px solid #00ffff;
+        }
+
+        .robot-eyes {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 12px;
+            margin-top: 5px;
+        }
+
+        .robot-eye {
+            width: 8px;
+            height: 8px;
+            background: #ff0080;
+            border-radius: 50%;
+            animation: robotBlink 3s ease-in-out infinite;
+            box-shadow: 0 0 15px #ff0080;
+        }
+
+        @keyframes robotBlink {
+            0%, 90%, 100% { opacity: 1; }
+            95% { opacity: 0; }
+        }
+
+        .robot-antenna {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 15px;
+            background: #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        .robot-antenna::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -3px;
+            width: 8px;
+            height: 8px;
+            background: #ff0080;
+            border-radius: 50%;
+            animation: antennaGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes antennaGlow {
+            0%, 100% { box-shadow: 0 0 10px #ff0080; }
+            50% { box-shadow: 0 0 20px #ff0080, 0 0 30px #ff0080; }
+        }
+
+        .robot-arms {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            height: 20px;
+        }
+
+        .robot-arm {
+            width: 20px;
+            height: 4px;
+            background: #00ffff;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            animation: robotWave 2s ease-in-out infinite;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        .robot-arm.left {
+            left: -15px;
+            transform-origin: right center;
+        }
+
+        .robot-arm.right {
+            right: -15px;
+            transform-origin: left center;
+            animation-delay: 1s;
+        }
+
+        @keyframes robotWave {
+            0%, 100% { transform: translateY(-50%) rotate(0deg); }
+            50% { transform: translateY(-50%) rotate(20deg); }
+        }
+
+        @keyframes robotFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Étoiles dynamiques -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Nébuleuses -->
+    <div class="nebula nebula1"></div>
+    <div class="nebula nebula2"></div>
+    <div class="nebula nebula3"></div>
+    
+    <!-- Particules flottantes -->
+    <div id="particles"></div>
+
+    <div class="container">
+        <h1 id="title"></h1>
+        
+        <div id="message-container">
+            <div id="loading-indicator">
+                <div style="display: inline-block; animation: spin 1s linear infinite;">⚡</div>
+                Traitement en cours...
+            </div>
+        </div>
+
+        <form id="dux-form">
+            <div class="input-group">
+                <label for="target_file_path">
+                    <span style="color: #00ffff;">►</span> Chemin du fichier à modifier :
+                </label>
+                <input type="text" id="target_file_path" name="target_file_path" 
+                       placeholder="Entrez le chemin complet du fichier (ex: index.html)" required>
+            </div>
+
+            <div class="input-group">
+                <label for="user_query">
+                    <span style="color: #00ffff;">►</span> Votre requête :
+                </label>
+                <input type="text" id="user_query" name="user_query" 
+                       placeholder="Ex: 'Ajoute un bouton rouge centré avec du texte blanc'" required>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" id="submit-button">Appliquer la modification</button>
+            </div>
+        </form>
+
+        <div class="code-section">
+            <div class="code-box">
+                <h2>Contenu du Fichier Actuel</h2>
+                <button class="copy-button" onclick="copyCode()">📋 Copier</button>
+                <pre><code id="currentCodeBlock"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assistant Robot IA -->
+    <div class="robot-assistant" onclick="robotSpeak()">
+        <div class="robot-body">
+            <div class="robot-head">
+                <div class="robot-antenna"></div>
+                <div class="robot-eyes">
+                    <div class="robot-eye"></div>
+                    <div class="robot-eye"></div>
+                </div>
+            </div>
+            <div class="robot-arms">
+                <div class="robot-arm left"></div>
+                <div class="robot-arm right"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Génération des étoiles
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Génération des particules
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 20 + 15) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Effet Matrix pour le texte
+        function typewriterEffect(element, text, speed = 10) {
+            element.innerHTML = '';
+            let i = 0;
+            
+            function typeChar() {
+                if (i < text.length) {
+                    const char = text.charAt(i);
+                    const span = document.createElement('span');
+                    span.className = 'matrix-char';
+                    span.textContent = char;
+                    element.appendChild(span);
+                    i++;
+                    setTimeout(typeChar, speed);
+                }
+            }
+            
+            typeChar();
+        }
+
+        // Fonction pour afficher le titre avec effet Matrix
+        function displayTitleEffect() {
+            const title = document.getElementById('title');
+            const text = "Assistant Dux Web (FastAPI)";
+            typewriterEffect(title, text, 100);  // Vitesse normale pour le titre
+        }
+
+        // Fonction pour faire parler le robot
+        function robotSpeak() {
+            const phrases = [
+                "Système opérationnel ✓",
+                "Analyse en cours...",
+                "Prêt à modifier vos fichiers !",
+                "Intelligence artificielle activée",
+                "Que puis-je faire pour vous ?",
+                "Transformation spatiale réussie !"
+            ];
+            
+            const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+            
+            // Créer une bulle de dialogue temporaire
+            const bubble = document.createElement('div');
+            bubble.style.cssText = `
+                position: fixed;
+                bottom: 160px;
+                right: 30px;
+                background: rgba(0, 255, 255, 0.9);
+                color: #001122;
+                padding: 10px 15px;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                font-weight: 600;
+                z-index: 1000;
+                animation: bubbleAppear 0.5s ease-out;
+                box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes bubbleAppear {
+                    0% { opacity: 0; transform: scale(0.5) translateY(20px); }
+                    100% { opacity: 1; transform: scale(1) translateY(0); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            bubble.textContent = randomPhrase;
+            document.body.appendChild(bubble);
+            
+            setTimeout(() => {
+                bubble.remove();
+                style.remove();
+            }, 3000);
+        }
+
+        // Variables du formulaire
+        const form = document.getElementById('dux-form');
+        const userQueryInput = document.getElementById('user_query');
+        const targetFilePathInput = document.getElementById('target_file_path');
+        const currentCodeBlock = document.getElementById('currentCodeBlock');
+        const messageContainer = document.getElementById('message-container');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const submitButton = document.getElementById('submit-button');
+
+        // Fonction pour afficher les messages
+        function displayMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-box ${type}`;
+            messageDiv.textContent = message;
+            messageContainer.innerHTML = '';
+            messageContainer.appendChild(messageDiv);
+            messageContainer.appendChild(loadingIndicator);
+        }
+
+        // Fonction pour cacher les messages
+        function clearMessages() {
+            messageContainer.innerHTML = '';
+            messageContainer.appendChild(loadingIndicator);
+        }
+
+        // Gestionnaire du formulaire
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            clearMessages();
+            loadingIndicator.style.display = 'block';
+            submitButton.disabled = true;
+
+            const user_query = userQueryInput.value;
+            const target_file_path = targetFilePathInput.value;
+
+            try {
+                const response = await fetch('/modify', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ user_query, target_file_path }),
+                });
+
+                const data = await response.json();
+
+                loadingIndicator.style.display = 'none';
+                submitButton.disabled = false;
+
+                if (response.ok) {
+                    displayMessage(data.message, 'success');
+                    typewriterEffect(currentCodeBlock, data.updated_code, 10); // Affichage rapide du code
+                    userQueryInput.value = '';
+                } else {
+                    displayMessage(`Erreur : ${data.detail || 'Une erreur inconnue est survenue.'}`, 'error');
+                }
+            } catch (error) {
+                loadingIndicator.style.display = 'none';
+                submitButton.disabled = false;
+                displayMessage(`Erreur réseau ou interne : ${error.message}`, 'error');
+            }
+        });
+
+        // Fonction de copie du code
+        function copyCode() {
+            const codeBlock = document.getElementById('currentCodeBlock');
+            const textToCopy = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copyButton = document.querySelector('.copy-button');
+                const originalText = copyButton.textContent;
+                copyButton.textContent = '✅ Copié!';
+                setTimeout(() => copyButton.textContent = originalText, 2000);
+            }).catch(err => {
+                console.error('Erreur lors de la copie du code : ', err);
+                alert('Échec de la copie du code.');
+            });
+        }
+
+        // Initialiser les étoiles et particules
+        createStars();
+        createParticles();
+
+        // Afficher le titre avec effet Matrix
+        displayTitleEffect();
+    </script>
+</body>
+</html>
