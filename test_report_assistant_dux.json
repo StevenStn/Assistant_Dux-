@@ -1,0 +1,81 @@
+{
+  "test_session": {
+    "start_time": "2025-06-10T22:14:43.333708",
+    "end_time": "2025-06-10T22:15:37.522935",
+    "total_tests": 10,
+    "successful_tests": 9,
+    "failed_tests": 1
+  },
+  "test_results": [
+    {
+      "test_name": "QuerytoPromptTransformer",
+      "success": true,
+      "details": "Prompt généré: 1932 caractères",
+      "duration": 4.351329326629639,
+      "timestamp": "2025-06-10T22:14:47.685038"
+    },
+    {
+      "test_name": "Expert_Web_Gemini",
+      "success": true,
+      "details": "Réponse générée: 4794 caractères",
+      "duration": 8.32175087928772,
+      "timestamp": "2025-06-10T22:14:56.006788"
+    },
+    {
+      "test_name": "Fonction_re_c_Apply",
+      "success": true,
+      "details": "Application réussie: True",
+      "duration": 0.0,
+      "timestamp": "2025-06-10T22:14:56.006788"
+    },
+    {
+      "test_name": "Initialisation AssistantDux",
+      "success": true,
+      "details": "Session ID: dux_20250610_221456, Fichier: test_init.html",
+      "duration": 0.0,
+      "timestamp": "2025-06-10T22:14:56.006788"
+    },
+    {
+      "test_name": "Création de fichier",
+      "success": true,
+      "details": "Fichier créé: True",
+      "duration": 0.015625715255737305,
+      "timestamp": "2025-06-10T22:14:56.022414"
+    },
+    {
+      "test_name": "Workflow Complet 1",
+      "success": false,
+      "details": "❌ Erreur lors de l'application du code",
+      "duration": 8.299974203109741,
+      "timestamp": "2025-06-10T22:15:04.338034"
+    },
+    {
+      "test_name": "Workflow Complet 2",
+      "success": true,
+      "details": "✅ Requête traitée avec succès ! Code appliqué dans test_workflow_2.html | Taille finale: 1269 caractères",
+      "duration": 9.67419695854187,
+      "timestamp": "2025-06-10T22:15:14.012231"
+    },
+    {
+      "test_name": "Workflow Complet 3",
+      "success": true,
+      "details": "✅ Requête traitée avec succès ! Code appliqué dans test_workflow_3.html | Taille finale: 2470 caractères",
+      "duration": 11.888398170471191,
+      "timestamp": "2025-06-10T22:15:25.900629"
+    },
+    {
+      "test_name": "Quick Process",
+      "success": true,
+      "details": "Fichier créé: True, Taille: 989 caractères",
+      "duration": 7.456139802932739,
+      "timestamp": "2025-06-10T22:15:33.356769"
+    },
+    {
+      "test_name": "Gestion d'erreurs",
+      "success": true,
+      "details": "Erreur gérée correctement sans crash",
+      "duration": 4.023905515670776,
+      "timestamp": "2025-06-10T22:15:37.380674"
+    }
+  ]
+}

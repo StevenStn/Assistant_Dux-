@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Page de Test Dux - Bouton Rouge</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: blue;
+        }
+
+        /* Style du bouton rouge */
+        #boutonRouge {
+            background-color: #FF0000; /* Rouge */
+            color: #FFFFFF; /* Blanc */
+            padding: 10px; /* Espacement interne */
+            border: 1px solid black; /* Bordure noire */
+            border-radius: 5px; /* Coins arrondis */
+            cursor: pointer; /* Curseur de type pointeur */
+            transition: background-color 0.3s ease; /* Transition douce de la couleur de fond */
+            font-size: 16px; /* Taille de la police */
+        }
+
+        /* Style du bouton au survol */
+        #boutonRouge:hover {
+            background-color: #cc0000; /* Rouge plus foncé au survol */
+        }
+
+        /* Style du bouton au focus (accessibilité) */
+        #boutonRouge:focus {
+            outline: 2px solid #800000; /* Ajoute une bordure de focus pour l'accessibilité */
+            outline-offset: 2px; /* Éloigne la bordure du texte */
+        }
+    </style>
+</head>
+<body>
+    <h1>Titre Existant</h1>
+    <p>Ceci est un paragraphe initial.</p>
+
+    <!-- Ancien bouton vert sera remplacé ici -->
+
+    <script>
+        // 1. Supprimer l'ancien bouton "monBoutonVert"
+        const boutonVert = document.getElementById('monBoutonVert');
+        if (boutonVert) {
+            boutonVert.remove();
+        }
+
+        // 2. Créer le nouveau bouton "boutonRouge"
+        const boutonRouge = document.createElement('button');
+        boutonRouge.id = 'boutonRouge';
+        boutonRouge.textContent = 'Reussi';
+
+        // 3. Style du bouton rouge (peut être géré par CSS, mais inclus ici pour clarté)
+        boutonRouge.style.backgroundColor = '#FF0000';
+        boutonRouge.style.color = '#FFFFFF';
+        boutonRouge.style.padding = '10px';
+        boutonRouge.style.border = '1px solid black';
+        boutonRouge.style.borderRadius = '5px';
+        boutonRouge.style.cursor = 'pointer';
+        boutonRouge.style.fontSize = '16px';
+
+        // 4. Insérer le nouveau bouton à la place de l'ancien
+        const script = document.querySelector('script'); // Sélectionne le premier script, car on insère avant
+        script.parentNode.insertBefore(boutonRouge, script); // Insert le bouton avant le script
+
+        // Optionnel : Ajout d'un comportement au clic (exemple)
+        boutonRouge.addEventListener('click', function() {
+            alert('Bouton rouge cliqué !');
+        });
+    </script>
+</body>
+</html>
