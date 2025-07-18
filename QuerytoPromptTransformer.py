@@ -2,12 +2,7 @@ import google.generativeai as genai
 import os
 from typing import Optional
 
-""" QUESTIONS
 
-- Pourquoi ne pas utiliser une fonction qui Prompt_transform(Requete) qui prend la requete ; fait l'appel du LLM de Gemini puis lui envoit
-la rquete avec l'instruction qu'il est un developpeur web et de transformer la requet en prompt precis ; conscis et tres comprehensible pour un expert en developpement web ?
-
-"""
 class QueryToPromptTransformer:
     """
     Classe pour transformer les requêtes utilisateur en prompts précis 
